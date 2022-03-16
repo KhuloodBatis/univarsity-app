@@ -13,7 +13,33 @@ class CourseController extends Controller
     // to erturn all courses
     public function index()
     {
-        return Course::all();
+        $courses = Course::with('teachers.courseTeachers.students')->get();
+        $data = $courses->map(function ($course) {
+            return [
+                "id" => $course->id,
+                "name" => $course->name,
+                "hour" => $course->hour,
+                'teachers' => $course->teachers->map(function ($teacher) {
+                    return [
+                        'id' => $teacher->id,
+                        'name' => $teacher->name,
+                        'students' => $teacher->courseTeachers->flatMap(function ($courseTeacher) {
+                            return $courseTeacher->students->map(function ($students) {
+                                return [
+                                    'id' => $students->id,
+                                    'name' => $students->name,
+                                ];
+                            });
+                        })
+
+                    ];
+                }),
+               
+
+
+            ];
+        });
+        return $data;
     }
 
 

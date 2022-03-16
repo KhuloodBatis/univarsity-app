@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Teacher;
 use Illuminate\Http\Request;
+use App\Http\Controllers\CollectData;
+
+use function PHPSTORM_META\map;
 
 class TeacherController extends Controller
 {
@@ -14,7 +17,15 @@ class TeacherController extends Controller
      */
     public function index()
     {
-        return Teacher::all();
+        $teachers = Teacher::all();
+
+        return $teachers->map(function ($teachers) {
+
+            return [
+                "id" => $teachers->id,
+                "name" => $teachers->name
+            ];
+        });
     }
 
 
