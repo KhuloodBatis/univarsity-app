@@ -3,10 +3,11 @@
 namespace App\Models;
 
 use App\Models\CourseTeacher;
-use Illuminate\Database\Eloquent\Factories\BelongsToManyRelationship;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Factories\BelongsToManyRelationship;
 
 class Student extends Model
 {
@@ -33,4 +34,12 @@ class Student extends Model
         return $this->belongsToMany(Course::class);
         //, null, null, 'course_id'
     }
+
+
+    public function teachers(): HasMany
+    {
+        return $this->hasMany(Teacher::class);
+    }
+
+    
 }

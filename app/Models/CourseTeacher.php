@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Student;
+use App\Models\Course;
 
+use App\Models\Student;
+use App\Models\Teacher;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -33,7 +35,12 @@ class CourseTeacher extends Pivot
 
     public function course(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Course::class);
+        // 'course_teacher_id', 'course_id'
+    }
+    public function teacher(): BelongsTo
+    {
+        return $this->belongsTo(Teacher::class);
         // 'course_teacher_id', 'course_id'
     }
 }
