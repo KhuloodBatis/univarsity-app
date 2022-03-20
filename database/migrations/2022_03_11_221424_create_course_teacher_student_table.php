@@ -16,6 +16,7 @@ class CreateCourseTeacherStudentTable extends Migration
         Schema::create('course_teacher_student', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('student_id');
+            $table->unsignedBigInteger('course_teacher_id');
             $table->timestamps();
         });
     }

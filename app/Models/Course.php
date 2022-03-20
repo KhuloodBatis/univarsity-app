@@ -20,17 +20,10 @@ class Course extends Model
     ];
 
 
-    public function teachers(): BelongsToMany
+    public function users(): BelongsToMany
     {
-        return $this->belongsToMany(Teacher::class);
+        return $this->belongsToMany(User::class, 'course_teacher', 'course_id', 'teacher_id', 'id', 'id');
     }
-
-
-    public function students(): BelongsToMany
-    {
-        return $this->belongsToMany(Student::class);
-    }
-
 
     public function courseTeachers(): HasMany
     {
