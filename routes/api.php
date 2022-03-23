@@ -25,7 +25,7 @@ use App\Http\Controllers\Admin\RegisterController as AdminRegisterController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/student', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/', function (Request $request) {
     return $request->user();
 });
 
@@ -41,14 +41,20 @@ Route::prefix('teachers')->group(function () {
 //group route Admin
 Route::prefix('admins')->group(function () {
     Route::post('register', [AdminRegisterController::class, 'register']);
-    Route::post('add-course', [CourseController::class, 'addCourse']);
-    Route::post('add-teacher-to-course', [TeacherController::class, 'addTeacherToCourse']);
-    Route::post('add-role', [RoleController::class, 'addRole']);
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('courses', [CourseController::class, 'store']);
+        Route::post('courses/{course}/teacher', [TeacherController::class, 'addTeacher']);
+        Route::post('roles', [RoleController::class, 'store']);
+    });
 });
 
 //group route student
 
 Route::prefix('students')->group(function () {
     Route::post('register', [RegisterController::class, 'register']);
-    Route::post('register-in-section', [SectionController::class, 'registerInSection']);
+    //here add auth because when student wante register to section he already do login then register in section by Auth token 
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('sections/{course_teacher}/register', [SectionController::class, 'section']);
+    });
 });

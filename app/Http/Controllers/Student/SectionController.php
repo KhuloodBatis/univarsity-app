@@ -6,17 +6,24 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\CourseTeacher;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class SectionController extends Controller
 {
 
-    public function registerInSection(Request $request)
+    public function section(Request $request, CourseTeacher $course_teacher)
     {
 
-        $user = User::where('id', $request->student_id)->first();
-        $user->courseTeachers()->attach([
-            $request->course_teacher_id
+        // $user = User::where($request->user())->first();
+        // $user->courseTeachers()->attach([
+        //     $request->course_teacher_id
+        // ]);
+
+        //this code to register student after login by auth sanctum
+        $course_teacher->users()->attach([Auth::user()->id]);
+
+        return response()->json([
+            'status' => 'student was added in section',
         ]);
-        return $user;
     }
 }

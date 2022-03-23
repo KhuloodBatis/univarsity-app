@@ -5,19 +5,19 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
-
+use App\Http\Resources\RoleResource;
 
 class RoleController extends Controller
 {
-    public function addRole(Request $request)
+    public function store(Request $request)
     {
 
         $request->validate([
-            'name' => 'required'
+            'name' => ['required', 'alpha']
         ]);
-        $user = Role::create([
+        $role = Role::create([
             'name' => $request->name
         ]);
-        return $request;
+        return  new RoleResource($role);
     }
 }
