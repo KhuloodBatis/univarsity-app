@@ -7,26 +7,28 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 
+
 class RegisterController extends Controller
 {
     public function register(Request $request)
-    {
+    {   
         $request->validate([
-            'name' => ['required'],
-            'email' => ['required', 'unique:users,email'],
-            'password' => ['required', 'min:6'],
+            'name' => ['required', 'not_regex:/^Dr\..*/'],
+            'email' => ['required', 'email', 'unique:users,email'],
+            'password' => ['required','integer', 'min:6'],
             'mobile' => ['required'],
         ]);
-        $teacher = User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'mobile' => $request->mobile,
         ]);
+        //to assign Role to user as teacher
+        $user->assignRole('teacher');
+        //to create token after register
+        $token = $user->createToken('key')->plainTextToken;
 
-        $teacher->createToken('key')->plainTextToken;
-        return response()->json([
-            'Token' => 'token arrived '
-        ]);
+        return response()->json(['access_token' => $token]);
     }
 }

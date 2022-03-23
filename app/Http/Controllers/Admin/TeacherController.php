@@ -7,15 +7,20 @@ use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+
+
 class TeacherController extends Controller
 {
-    public function addTeacherToCourse(Request $request)
-    {
+    public function addTeacher(Request $request, Course $course)
+    {   //this code to add teacher to  course by Admin user Id course
+        $this->validate($request, [
+            'teacher_id' => ['required', 'exists:users,id']
+        ]);
+        $course->users()->attach($request->teacher_id);
 
-        $course = Course::where('id', $request->course_id)->first();
-        $course->users()->attach(
-            $request->teacher_id
-        );
-        return $course;
+
+        return response()->json([
+            'status' => 'teacher was added successfully'
+        ]);
     }
 }
