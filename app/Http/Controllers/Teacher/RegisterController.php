@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Hash;
 class RegisterController extends Controller
 {
     public function register(Request $request)
-    {   
+    {
         $request->validate([
-            'name' => ['required', 'not_regex:/^Dr\..*/'],
+            'name' => ['required', 'not_regex:/^Dr.\..*/'],
             'email' => ['required', 'email', 'unique:users,email'],
             'password' => ['required','integer', 'min:6'],
             'mobile' => ['required'],
