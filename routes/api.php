@@ -53,8 +53,8 @@ Route::prefix('admins')->group(function () {
 
 Route::prefix('students')->group(function () {
     Route::post('register', [RegisterController::class, 'register']);
-    //here add auth because when student wante register to section he already do login then register in section by Auth token 
+    //here add auth because when student wante register to section he already do login then register in section by Auth token
     Route::middleware('auth:sanctum')->group(function () {
-        Route::post('sections/{course_teacher}/register', [SectionController::class, 'section']);
+        Route::post('sections/{courseTeacher}/register', [SectionController::class, 'section']);
     });
 });
